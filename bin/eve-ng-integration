@@ -29,36 +29,17 @@ class Terminal(object):
         return False
 
     def _terminal_emulator_cmd(self):
-        if self.override_terminal:
-            return self.override_terminal.split()
-        elif self._is_command('x-terminal-emulator'):
-            return ['x-terminal-emulator', '-e']
-        elif self._current_desktop('cinnamon', 'gnome', 'unity'):
-            return ['gnome-terminal', '-e']
-        elif self._current_desktop('kde'):
-            return ['konsole', '-e']
-        elif self._current_desktop('lxde', 'lxqt'):
-            return ['lxterminal', '-e']
-        elif self._current_desktop('mate'):
-            return ['mate-terminal', '-e']
-        elif self._current_desktop('pantheon'):
-            return ['pantheon-terminal', '-e']
-        elif self._current_desktop('xfce'):
-            return ['xfce4-terminal', '-e']
-        elif self._current_desktop('sway'):
-            return ['foot', 'sh', '-c']
-        elif self._is_command('urxvt'):
-            return ['urxvt', '-e']
-        else:
-            return ['xterm', '-e']
+        return ['alacritty', '-e']
 
     def execute(self, command):
         if isinstance(command, (str)):
-            command = command.split('\n')
+            # command = command.split('\n')a
+            command = command.split()
 
         term = self._terminal_emulator_cmd()
 
         Popen(term + command)
+        
 
 
 def main(argv):
@@ -105,5 +86,4 @@ if __name__ == '__main__':
     try:
         sys.exit(main(sys.argv[1]))
     except IndexError:
-        print('usage:', __file__, '<url>', file=sys.stderr)
         sys.exit(1)
